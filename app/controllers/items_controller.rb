@@ -1,52 +1,47 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: %i[show update destroy]
+  before_action :require_admin, except: %i[index show]
+  before_action :item, only: %i[show update destroy]
 
-  # GET /items
   def index
-    @items = Item.all
-
-    render json: @items
+    @items = Item.all.order(created_at: :desc)
+    json_response(@items)
   end
 
-  # GET /items/1
-  def show
-    render json: @item
-  end
-
-  # POST /items
   def create
-    @item = Item.new(item_params)
-
-    if @item.save
-      render json: @item, status: :created, location: @item
-    else
-      render json: @item.errors, status: :unprocessable_entity
-    end
+    @item = current_user.items.build(item_params)
+    json_response(@item, :created) if @item.save!
   end
 
-  # PATCH/PUT /items/1
+  def show
+    @liked = current_user.carts.any? { |el| el.item_id == @item.id }
+    @response = {
+      item: @item,
+      liked: @liked
+    }
+    json_response(@response)
+  end
+
   def update
-    if @item.update(item_params)
-      render json: @item
-    else
-      render json: @item.errors, status: :unprocessable_entity
-    end
+    @item.update!(item_params)
+    json_response(@item)
   end
 
-  # DELETE /items/1
   def destroy
     @item.destroy
+    head :no_content
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_item
-    @item = Item.find(params[:id])
+  def item_params
+    params.permit(:name, :description, :price, :contact, :image)
   end
 
-  # Only allow a trusted parameter "white list" through.
-  def item_params
-    params.require(:item).permit(:name, :description, :image)
+  def require_admin
+    raise(ExceptionHandler::InvalidToken, Message.no_admin) unless current_user.admin
+  end
+
+  def item
+    @item = Item.find(params[:id])
   end
 end

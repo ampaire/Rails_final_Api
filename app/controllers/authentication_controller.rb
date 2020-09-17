@@ -1,7 +1,7 @@
 # app/controllers/authentication_controller.rb
 
 class AuthenticationController < ApplicationController
-  skip_before_action :authenticate_request, only :authenticate
+  skip_before_action :authenticate_request, only: :authenticate
 
   def authenticate
     command = AuthenticateUser.new(auth_params[:email], auth_params[:password])
@@ -12,6 +12,7 @@ class AuthenticationController < ApplicationController
       render json: { error: command.errors }, status: :unauthorized
     end
   end
+
   private
 
   def auth_params

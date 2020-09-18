@@ -1,0 +1,10 @@
+# config/cloudinary.yml
+development:
+  cloud_name: "effie"
+  api_key: "469194691937622"
+  api_secret: "7fg04zjZmtUcS3fHL2Ih_hKiy-I"
+
+production:
+  cloud_name: "effie"
+  api_key: "469194691937622"
+  api_secret: "7fg04zjZmtUcS3fHL2Ih_hKiy-I"

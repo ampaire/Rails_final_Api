@@ -11,7 +11,7 @@ This API can be integrated in the following applications/ sites;
 - Buy and re-sell sites and very many more!
 
 ## API LINK
-https://beautiful-tags.herokuapp.com/
+https://intense-savannah-62345.herokuapp.com/
 
 ## Getting Started
 

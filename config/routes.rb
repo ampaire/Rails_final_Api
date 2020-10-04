@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
-  resources :users, except: [:update, :create, :show]
   resources :items
-  resources :cart,except: %i[:destroy]
-  root :to => 'index#index'
+  resources :cart,except: %i[destroy]
   post '/signup', to: 'users#create'
   get '/profile', to: 'users#show'
   put '/edit-profile', to: 'users#update'

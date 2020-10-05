@@ -1,23 +1,23 @@
 class CartsController < ApplicationController
   def index
-    @favorites = Favorite.all
-    json_response(@favorites)
+    @carts = Cart.all
+    json_response(@carts)
   end
 
   def create
-    @favorite = current_user.favorites.create!(favorite_params)
-    json_response(@favorite, :created)
+    @cart = current_user.carts.create!(cart_params)
+    json_response(@cart, :created)
   end
 
   def destroy
-    @favorite = Favorite.where(item_id: params[:item_id])[0]
-    @favorite.destroy
+    @cart = Cart.where(item_id: params[:item_id])[0]
+    @cart.destroy
     head :no_content
   end
 
   private
 
-  def favorite_params
+  def cart_params
     params.permit(:item_id)
   end
 end
